@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTG.TempManager", "YTG.TempManager\YTG.TempManager.csproj", "{5CBD6CDF-3BB4-4242-8886-84C19535BBEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CBD6CDF-3BB4-4242-8886-84C19535BBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CBD6CDF-3BB4-4242-8886-84C19535BBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CBD6CDF-3BB4-4242-8886-84C19535BBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CBD6CDF-3BB4-4242-8886-84C19535BBEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB0409E4-3476-402A-BBC6-058EEC8A2FBF}
+	EndGlobalSection
+EndGlobal

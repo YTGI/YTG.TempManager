@@ -9,11 +9,13 @@
 */
 // --------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using YTG.Framework.AppLogging;
+using YTG.TempManager.Services;
 
 namespace YTG.TempManager
 {
@@ -21,7 +23,15 @@ namespace YTG.TempManager
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            using IHost host = CreateHostBuilder(args).Build();
+
+            using var scope = host.Services.CreateScope();
+
+            IServiceProvider services = scope.ServiceProvider;
+
+            services.GetRequiredService<IStartHere>().Start();
+
+
         }
 
 
@@ -30,8 +40,15 @@ namespace YTG.TempManager
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            ConfigurationBuilder _configuration = new();
+            IConfiguration _configurationBuilder = _configuration
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
+                .Build();
+
+            IHostBuilder _host = Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
@@ -43,12 +60,14 @@ namespace YTG.TempManager
                     logging.AddYTGAppLogger();
                 }).ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Startup>();
+                    services.Configure<YTGAppSettings>(_configurationBuilder.GetSection("AppSettings"));
+                    services.Configure<YTGEventLoggerOptions>(_configurationBuilder.GetSection("Logging:YTGEventLogging"));
+                    services.AddSingleton<IStartHere, StartHere>();
+                    services.AddSingleton<ITFService, TFService>();
                 });
 
+            return _host;
 
-
-
-
+        }
     }
 }

@@ -15,7 +15,7 @@ using YTG.TempManager.Services;
 
 namespace YTG.TempManager
 {
-    internal class StartHere
+    internal class StartHere : IStartHere
     {
 
 
@@ -24,11 +24,22 @@ namespace YTG.TempManager
         /// <summary>
         /// Default constructor
         /// </summary>
-        public StartHere(ITFService tfService, IEventLogger<StartHere> eventLogger, IOptions<YTGEventLoggerOptions> loggerSettings)
+        //public StartHere()
+        //{
+        //    //service = tfService;
+        //    //EventLogger = eventLogger;
+        //    //AppLoggerOptions = loggerSettings.Value;
+        //}
+        //public StartHere(ITFService tfService, IEventLogger<StartHere> eventLogger, IOptions<YTGEventLoggerOptions> loggerSettings)
+        //{
+        //    service = tfService;
+        //    EventLogger = eventLogger;
+        //    AppLoggerOptions = loggerSettings.Value;
+        //}
+        public StartHere(ITFService tfService)
         {
             service = tfService;
-            EventLogger = eventLogger;
-            AppLoggerOptions = loggerSettings.Value;
+            // EventLogger = eventLogger;
         }
 
         #endregion Constructors
@@ -43,12 +54,12 @@ namespace YTG.TempManager
         /// <summary>
         /// Gets the DI reference to the IEventLogger
         /// </summary>
-        private IEventLogger<StartHere> EventLogger { get; }
+        // private IEventLogger<StartHere> EventLogger { get; }
 
         /// <summary>
         /// Gets the AppLogging settings from appsettings.json
         /// </summary>
-        private YTGEventLoggerOptions AppLoggerOptions { get; }
+        //private YTGEventLoggerOptions AppLoggerOptions { get; }
 
         #endregion Properties
 
@@ -68,9 +79,8 @@ namespace YTG.TempManager
             }
             catch (Exception ex)
             {
-                EventLogger.LogError(ex, string.Empty, "Start", AppLoggerOptions.AppVersion);
+                //EventLogger.LogError(ex, string.Empty, "Start", AppLoggerOptions.AppVersion);
             }
-
         }
 
 

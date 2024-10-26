@@ -26,7 +26,7 @@ namespace YTG.TempManager.Services
         /// Default constructor
         /// </summary>
         /// <param name="options"></param>
-        internal TFService(IOptions<YTGAppSettings> options)
+        public TFService(IOptions<YTGAppSettings> options)
         {
             AppSettings = options.Value;
         }

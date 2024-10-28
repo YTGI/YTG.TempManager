@@ -11,6 +11,8 @@
 
 using Microsoft.Extensions.Options;
 
+using System.IO;
+
 namespace YTG.TempManager.Services
 {
 
@@ -53,11 +55,12 @@ namespace YTG.TempManager.Services
             bool blnSuccess = false;
             try
             {
-                string _folderName = DateTime.Now.ToString("yyyyMMdd");
+                string _sourceFolder = Path.GetFullPath(AppSettings.SourceFolder ?? "C:\\Temp");
+                string _subFolderName = DateTime.Now.ToString("yyyyMMdd");
 
-                if (!(System.IO.Directory.Exists(AppSettings.ArchiveFolderRoot + _folderName)))
+                if (!Directory.Exists(Path.Combine(_sourceFolder, _subFolderName)))
                 {
-                    System.IO.Directory.CreateDirectory(AppSettings.ArchiveFolderRoot + _folderName);
+                    Directory.CreateDirectory(Path.Combine(_sourceFolder,  _subFolderName));
                     blnSuccess = true;
                 }
             }
@@ -76,27 +79,29 @@ namespace YTG.TempManager.Services
         {
             bool blnSuccess = false;
 
-            string _archiveFolderRoot = GetArchiveFolderRoot;
-            if (!(System.IO.Directory.Exists(_archiveFolderRoot)))
-            { System.IO.Directory.CreateDirectory(_archiveFolderRoot); }
+            string _sourceFolder = Path.GetFullPath(AppSettings.SourceFolder ?? "C:\\Temp");
+            string _destFolder = Path.GetFullPath(AppSettings.DestinationFolder ?? "C:\\Temp");
 
-            foreach (string directory in System.IO.Directory.GetDirectories(AppSettings.FolderRoot!))
+            if (!(Directory.Exists(_destFolder)))
+            { Directory.CreateDirectory(_destFolder); }
+
+            foreach (string directory in Directory.GetDirectories(_sourceFolder))
             {
-                DateTime datFolder = FolderToDate(directory);
+                DateTime _folderDate = FolderToDate(directory);
 
-                if ((datFolder < DateTime.Now.AddDays((AppSettings.ArchiveLookbackDays * -1)))
-                    && (datFolder > DateTime.MinValue))
+                if ((_folderDate < DateTime.Now.AddDays(AppSettings.ArchiveLookbackDays * -1))
+                    && (_folderDate > DateTime.MinValue))
                 {
-                    if ((System.IO.Directory.GetFiles(directory).Count() == 0)
-                        && (System.IO.Directory.GetDirectories(directory).Count() == 0))
+                    if ((Directory.GetFiles(directory).Count() == 0)
+                        && (Directory.GetDirectories(directory).Count() == 0))
                     {
                         // The folder has nothing in it
-                        System.IO.Directory.Delete(directory);
+                        Directory.Delete(directory);
                     }
-                    string strFolderName = datFolder.ToString("yyyyMMdd");
-                    if (!(System.IO.Directory.Exists(_archiveFolderRoot + strFolderName)))
+                    string strFolderName = _folderDate.ToString("yyyyMMdd");
+                    if (!Directory.Exists(Path.Combine(_destFolder,  strFolderName)))
                     {
-                        System.IO.Directory.Move(directory, (_archiveFolderRoot + strFolderName));
+                        Directory.Move(directory, (_destFolder + strFolderName));
                     }
                 }
             }
@@ -112,53 +117,34 @@ namespace YTG.TempManager.Services
         #region Private Methods
 
         /// <summary>
-        /// The root folder for Archiving as defined in the appsettings.json file
-        /// </summary>
-        private string GetArchiveFolderRoot
-        {
-            get
-            {
-                string _archiveFolder = AppSettings.FolderRoot ?? "C:\\Temp";
-
-                if (AppSettings.ArchiveFolderRoot != null)
-                {
-                    if (!_archiveFolder.EndsWith("\\"))
-                    { _archiveFolder += "\\"; }
-                }
-
-                return _archiveFolder + AppSettings.ArchiveFolderRoot;
-
-            }
-        }
-
-        /// <summary>
         /// Convert the folder to a date
         /// </summary>
-        /// <param name="p_FolderName"></param>
+        /// <param name="folderName"></param>
         /// <returns></returns>
-        private DateTime FolderToDate(string p_FolderName)
+        private DateTime FolderToDate(string folderName)
         {
-            DateTime datReturn = DateTime.MinValue;
+            DateTime _return = DateTime.MinValue;
 
-            int intFolderName;
+            int _folderNameAsInt;
 
-            int intSlash = p_FolderName.LastIndexOf('\\');
+            // Make sure it doesn't end with a backslash
+            int _lastBSlashIndex = folderName.LastIndexOf('\\');
 
-            string strFolderName = p_FolderName.Substring(intSlash + 1, (p_FolderName.Length - (intSlash + 1)));
+            string _folderName = folderName.Substring(_lastBSlashIndex + 1, (folderName.Length - (_lastBSlashIndex + 1)));
 
-            if (strFolderName.Trim().Length == 8)
+            if (_folderName.Trim().Length == 8)
             {
                 // See if the folder name is numeric
-                if (int.TryParse(strFolderName, out intFolderName))
+                if (int.TryParse(_folderName, out _folderNameAsInt))
                 {
-                    string strDate = strFolderName.Substring(4, 2) + "-";
-                    strDate += strFolderName.Substring(6, 2) + "-";
-                    strDate += strFolderName.Substring(0, 4);
-                    DateTime.TryParse(strDate, out datReturn);
+                    string _dateString = _folderName.Substring(4, 2) + "-";
+                    _dateString += _folderName.Substring(6, 2) + "-";
+                    _dateString += _folderName.Substring(0, 4);
+                    DateTime.TryParse(_dateString, out _return);
                 }
             }
 
-            return datReturn;
+            return _return;
 
         }
 

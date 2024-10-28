@@ -10,7 +10,7 @@
 // --------------------------------------------------------------------------------
 
 using Microsoft.Extensions.Options;
-using YTG.Framework.AppLogging;
+//using YTG.Framework.AppLogging;
 using YTG.TempManager.Services;
 
 namespace YTG.TempManager

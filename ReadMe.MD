@@ -19,6 +19,9 @@ you worked on it.</p>
 <p>I also have created a habit of creating a notes.txt file in this folder. I then can use a GREP app to find information from even years ago if needed.</p>
 <p>Recommend running at leaset the destination folder in a location that is synced to the cloud, say with OneDrive etc.</p>
 
+## Concepts
+<p>This app code shows how to use dependency injection in a console application, which I found somewhat of a challenge to figure out the first time around.</p>
+
 ## Deploying
 <p>This is a stand along EXE that requires the appsettings.json to be with it for the appropriate settings</p>
 

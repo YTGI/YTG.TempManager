@@ -9,8 +9,6 @@
 */
 // --------------------------------------------------------------------------------
 
-using Microsoft.Extensions.Options;
-//using YTG.Framework.AppLogging;
 using YTG.TempManager.Services;
 
 namespace YTG.TempManager
@@ -51,16 +49,6 @@ namespace YTG.TempManager
         /// </summary>
         private ITFService service { get; }
 
-        /// <summary>
-        /// Gets the DI reference to the IEventLogger
-        /// </summary>
-        // private IEventLogger<StartHere> EventLogger { get; }
-
-        /// <summary>
-        /// Gets the AppLogging settings from appsettings.json
-        /// </summary>
-        //private YTGEventLoggerOptions AppLoggerOptions { get; }
-
         #endregion Properties
 
         #region Public Methods
@@ -71,16 +59,9 @@ namespace YTG.TempManager
         /// <returns></returns>
         public void Start()
         {
-            try
-            {
-                service.CreateTempFolder();
+            service.CreateTempFolder();
 
-                service.ArchiveTempFolder();
-            }
-            catch (Exception ex)
-            {
-                //EventLogger.LogError(ex, string.Empty, "Start", AppLoggerOptions.AppVersion);
-            }
+            service.ArchiveTempFolder();
         }
 
 

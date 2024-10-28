@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-//using YTG.Framework.AppLogging;
 using YTG.TempManager.Services;
 
 namespace YTG.TempManager
@@ -57,11 +56,9 @@ namespace YTG.TempManager
                     {
                         logging.AddEventLog();
                     }
-                    //logging.AddYTGAppLogger();
                 }).ConfigureServices((hostContext, services) =>
                 {
                     services.Configure<YTGAppSettings>(_configurationBuilder.GetSection("AppSettings"));
-                    //services.Configure<YTGEventLoggerOptions>(_configurationBuilder.GetSection("Logging:YTGEventLogging"));
                     services.AddSingleton<IStartHere, StartHere>();
                     services.AddSingleton<ITFService, TFService>();
                 });

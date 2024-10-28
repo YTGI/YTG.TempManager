@@ -6,60 +6,19 @@
 <p>Console application utilizing dependency injection</p>
 </br>
 
+## Description
+<p>This application will allow you to execute this EXE on startup. I have also found the need to create a windows scheduler to run it at midnight, 
+in case you work past midnight or just leave your PC running overnight.</p>
+<p>The application will create a temp folder in your designated Source folder with today's date, i.e. 20241027. 
+Then the lookback days are used to move that folder to a destination folder if it has any content. If it has no content, it just deletes it.</p>
+
+## About this app
+<p>I was shown this concept by a Database developer decades ago. Have a new folder every day that you store notes, scripts, graphics and anythihng else temporary 
+that you are working on. Then, say you need a script that you know you worked on a few weeks ago, you can find it easily, especially if you remember the day 
+you worked on it.</p>
+<p>I also have created a habit of creating a notes.txt file in this folder. I then can use a GREP app to find information from even years ago if needed.</p>
+<p>Recommend running at leaset the destination folder in a location that is synced to the cloud, say with OneDrive etc.</p>
+
 ## Deploying
 <p>This is a stand along EXE that requires the appsettings.json to be with it for the appropriate settings</p>
 
-> ### NuGet Package
-
-### Azure Pipeline
-azure-YTGITEST02.yml - Kicks off build on next branch checkin to YTGITEST02.ytgi.net server
-</br>
-
-# Server Setup
-## YTGITEST02
-
-F:\WebDeploy\RV4US.ACCT.PROC<br />
-App Pool: rv4us.acct.proc.api<br />
-IIS: rv4us.acct.proc.api<br />
-Bindings: <br />
-|Type  |IP address |Port|Host                   |SNI| 
-|:---  |:---|:---|:---|:---|
-|HTTP  |*   |5065| |No|
-|HTTPS |*   |443 |rv-acct-api-qa.rv4.us|Yes|
-<br />
-
-## YTGIPROD02
-F:\WebDeploy\RV4US.ACCT.PROC<br />
-F:\FTPRoot\Websites\RV4US.ACCT.PROC<br />
-App Pool: RV4US.Acct.Proc<br />
-IIS: RV4US.Acct.Proc<br />
-Bindings: <br />
-|Type  |IP address |Port|Host                |SNI| 
-|:---  |:---|:---|:---|:---|
-|HTTPS |*   |443 |rv-acct-api-prod2.rv4.us|Yes|
-<br />
-
-## DB Scaffolding for RVResearch schema items
-<p><b>NOTE:</b> -NoOnConfiguring and -NoPluralize are for EF Core 5.0 and above only.</p>
-
-Scaffold-DbContext "Server=localhost;Database=RVResearch;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Tables<br />
-	"acct.DealerLeads",<br />
-	"acct.Newsletters",<br />
-	"lookups.LuCategories",<br />
-	"lookups.LuItems",<br />
-	"rvs.RVModels",<br />
-	"rvs.Brands",<br />
-	"rvs.Manufacturers",<br />
-	"rvs.Features_Base",<br />
-	"rvs.FunctionalBenefits",<br />
-	"rvs.TopTenItems",<br />
-    "rvs.Map_TopTen_Features",<br />
-    "rvs.Map_TopTen_Functional",<br />
-    "rvs.Map_TopTen_RVTypes",<br />
-	"rvs.Uploads",<br />
-	"tracking.TopTen_Filters",<br />
-	"tracking.TopTen_Results",<br />
-	"tracking.TopTen_Selects",<br />
-	"tracking.Trad_Results",<br />
-	"tracking.Trad_Selects" <br />
--ContextDir Context -Context RVAccountContext -NoOnConfiguring -Force -UseDatabaseNames -NoPluralize<br />
